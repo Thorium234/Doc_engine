@@ -1,0 +1,113 @@
+
+
+# DocEngine - PDF to Word Converter & Document Manipulation Suite
+DocEngine is a high-performance document processing platform designed to replicate features found on platforms like iLovePDF. It leverages a blazing-fast **C++ Core Engine** for CPU-bound document manipulation, parsing, and OpenXML generation, wrapped inside a **Node.js/Express API Gateway** with a responsive **React/Next.js Frontend**.
+---## 🏗️ System Architecture
+
+[React Frontend] ──(HTTP / Multipart)──> [Node.js Express API] ──(Child Process)──> [C++ Core Engine]
+│
+▼
+[Poppler / OpenXML]
+
+
+- **Frontend**: Handles multi-file slice uploads, real-time progress bars, and drag-and-drop orchestration.
+- **Backend API Gateway**: Manages file streams, job queuing, disk isolation via unique UUIDs, and automated cleanups.
+- **Core Engine (C++)**: Interacts directly with system binaries and native bindings to perform layout extraction and document reconstruction.
+
+---
+
+## 🛠️ Prerequisites & System Dependencies
+
+Before building the C++ core or booting up the development servers, your system requires native build tools and document development libraries.
+
+### Linux (Ubuntu/Debian)
+```bash
+sudo apt update
+sudo apt install build-essential cmake libpoppler-cpp-dev libreoffice --no-install-recommends
+```
+
+### macOS
+```bash
+brew install cmake poppler libreoffice
+```
+
+---
+
+## 🚀 Getting Started
+
+### 1. Compile the C++ Core Engine
+The backend gateway expects the compiled executable to reside inside the `cpp-core/bin/` folder.
+
+```bash
+# Navigate to the C++ core directory
+cd cpp-core
+
+# Create a build directory
+mkdir build && cd build
+
+# Generate build files and compile
+cmake ..
+make
+
+# Move or verify the binary is in the correct path
+mkdir -p ../bin
+cp pdf_converter ../bin/
+cd ../..
+```
+
+### 2. Set Up the Backend & Frontend Dependencies
+Depending on your chosen execution setup (Node.js/Bun), install the package architecture.
+
+```bash
+# Install root package dependencies
+npm install
+
+# Initialize Prisma Database Client (if applicable)
+npx prisma generate
+```
+
+### 3. Run the Application locally
+```bash
+# Run the development environment
+npm run dev
+```
+
+---
+
+## 📂 Repository Layout
+
+```filepath
+workspace1/
+├── cpp-core/             # C++ Source files, CMake configurations, and binary wrappers
+│   ├── src/              # Main document converter logic (.cpp files)
+│   └── bin/              # Target directory for compiled executable modules
+├── src/                  # React/Next.js Application source code
+│   ├── components/       # Reusable UI elements (Drag & Drop zones, Progress loops)
+│   └── pages/api/        # Express/Next API gateway endpoints
+├── db/                   # Database schemas and initialization setups
+├── public/               # Asset management, icons, and static images
+├── Dockerfile            # Container deployment blueprint for isolated runtime
+└── docker-compose.yml    # Multi-container orchestration (App, Database, Cache)
+```
+
+---
+
+## 🔧 Roadmap & Feature Implementations
+
+- [x] **PDF to Word Conversion**: Parsing layout absolute boundaries and generating native OpenXML strings.
+- [ ] **Merge PDF**: Concatenating discrete PDF streams into consolidated output scopes.
+- [ ] **Compress PDF**: Stripping unneeded font metadata and scaling internal `/XObject` images down to 150 DPI.
+- [ ] **Word to PDF**: Headless orchestration of background LibreOffice microservices via worker clusters.
+- [ ] **Asynchronous Processing**: Integrating a Redis-backed queue hierarchy (`BullMQ`) to handle processing offloading.
+
+---
+
+## 🔒 Security & Optimization Practices
+
+1. **File Sandboxing**: Every job is assigned a strict cryptographic `UUIDv4`. Working directories are automatically deleted upon user stream closure or process failure.
+2. **Process Safety**: Inputs processed through the C++ executable layer bypass direct shell execution configurations (`execFile`) to completely eliminate shell-injection risks.
+3. **Payload Thresholds**: Global multi-part upload streams are hard-capped at 50MB directly at the edge layer to safeguard system memory structures.
+
+------------------------------
+Now that your repository is ready for code, would you like me to generate the CMakeLists.txt configuration for your cpp-core folder, or should we look into setting up the Docker configuration next?
+
