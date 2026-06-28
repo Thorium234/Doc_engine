@@ -175,12 +175,12 @@ export class DocumentProcessor {
     filename: string,
     content: any
   ): Promise<string> {
-    // In a real implementation, this would call C++ binary
     const outputDir = process.cwd() + '/uploads';
     const outputFilename = `converted_${Date.now()}.docx`;
     const outputPath = `${outputDir}/${outputFilename}`;
     
-    // Create mock converted content
+    // For now, use mock conversion since C++ binary needs file paths
+    // In a real implementation, this would call the C++ binary with proper file paths
     const convertedContent = `
       Converted Document
       =================
@@ -194,7 +194,7 @@ export class DocumentProcessor {
       Generated at: ${new Date().toISOString()}
     `;
     
-    // In real implementation, this would be the actual converted file
+    // Write the converted content
     fs.writeFileSync(outputPath, convertedContent);
     
     return outputPath;
