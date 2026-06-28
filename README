@@ -109,5 +109,3 @@ workspace1/
 3. **Payload Thresholds**: Global multi-part upload streams are hard-capped at 50MB directly at the edge layer to safeguard system memory structures.
 
 ------------------------------
-Now that your repository is ready for code, would you like me to generate the CMakeLists.txt configuration for your cpp-core folder, or should we look into setting up the Docker configuration next?
-
